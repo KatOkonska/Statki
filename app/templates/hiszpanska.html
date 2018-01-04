@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+<script>
+
+    function changeColor(myObj, color)
+    {
+        myObj.style.color = color;
+        document.getElementById('0 x 9').style.color = 'pink';
+    }
+
+</script>
+
+    <body>
+        <p>Nikt nie spodziewał się Hiszpańskiej Inkwizycji</p>
+        <p> <img src="https://vignette.wikia.nocookie.net/uncyclopedia/images/7/77/Spanish_inquisition.jpg/revision/latest?cb=20081109021957"></p>
+
+        <table border = "2pt" id="board" align="center">
+        {% for i in range (0,15) %}
+            <tr>
+            {% for j in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
+                {% set x = [ (j)|string, (i)|string ] | join("") %}
+                <td height="32" width="32" align="center" id="{{x}}" onmouseover="changeColor(this, 'red' )" onmouseleave="changeColor(this, 'blue')">{{j}}{{i}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+
+    </body>
+</html>
