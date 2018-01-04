@@ -6,7 +6,8 @@ from app import app
 @app.route('/index')
 def index():
     user = {'username': 'Josif'}
-    return render_template('index.html', user=user)
+    roomData = {'roomNumber': '8'}
+    return render_template('index.html', user=user, roomData=roomData)
 
 @app.route('/kasia')
 def niech_zyje():

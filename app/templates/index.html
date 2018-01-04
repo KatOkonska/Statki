@@ -73,14 +73,24 @@
 
     <body>
 
+    <header>
+                <h1>Witaj, jesteś w pokoju nr {{roomData['roomNumber']}} !</h1>
+    </header>
 
-        <section>
+        <section class="section_left">
 
-            <section class="title_left">
+
+            <section>
+                <h1>Hello, {{user['username']}} !</h1>
+                <h2>Twoje statki</h2>
+                <button type="button" id="button_one" class="button" onclick="startGame()"><h3>Click Me!</h3></button>
+             </section>
+
+            <section class="title">
                 <h1>Twoja Plansza</h1>
             </section>
 
-            <section class="section_left">
+            <section>
                 <table border = "2pt" id="board_one" align="center">
                     {% for i in range (0,15) %}
                         <tr>
@@ -93,23 +103,27 @@
                 </table>
             </section>
 
-            <section class="section_left">
-                <h1>Hello, {{user['username']}} !</h1>
-                <h2>Twoje statki</h2>
-                <button type="button" id="button_one" class="button" onclick="startGame()"><h3>Click Me!</h3></button>
-             </section>
+
 
         </section>
 
 
 
-        <section>
+        <section class="section_right">
 
-            <section class="title_right">
+
+            <section>
+                <h1>Hello, {{user['username']}} !</h1>
+                <h2>Statki przeciwnika</h2>
+                <button type="button" id="button_two" class="button" onclick="startGame()"><h3>Click Me!</h3></button>
+            </section>
+
+
+            <section class="title">
                 <h1>Plansza Przeciwnika</h1>
             </section>
 
-            <section class="section_right">
+            <section>
                 <table border = "2pt" id="board_two" align="center">
                     {% for k in range (0,15) %}
                         <tr>
@@ -120,12 +134,6 @@
                         </tr>
                     {% endfor %}
                 </table>
-            </section>
-
-            <section class="section_right">
-                <h1>Hello, {{user['username']}} !</h1>
-                <h2>Statki przeciwnika</h2>
-                <button type="button" id="button_two" class="button" onclick="startGame()"><h3>Click Me!</h3></button>
             </section>
 
         </section>
