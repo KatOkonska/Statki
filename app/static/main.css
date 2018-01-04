@@ -76,7 +76,7 @@ body
     }
 
 
-.section_left
+    .sectionLeft
     {
         width: 45%;
         margin-top: 0.2%;
@@ -90,14 +90,14 @@ body
 
     }
 
-    .section_right
+    .sectionRight
     {
         width: 45%;
         margin-top: 0.2%;
         margin-bottom: 0.2%;
         margin-left: 1%;
         margin-right:1%;
-        float: left;
+        float: right;
         background:#d5f4e6;
         padding: 1%;
         border-radius: 5px;
@@ -105,13 +105,59 @@ body
 
     }
 
+    .boardContainer
+    {
+        background: #888881;
+        display: block;
+        margin: auto;
+    }
+
+    .boardContent
+    {
+        float: left;
+        width: 100$;
+        background: blue;
+        overflow: hidden;
+        position: relative;;
+    }
+
+    .board
+    {
+        float: left;
+        width: 30%;
+        position: relative;
+        overflow: hidden;
+        left: 80%;
+    }
+
+    .shipsContainer
+    {
+        float: left;
+        width: 100$;
+        background: green;
+        position: relative;
+        right: 30%;
+    }
+
+    .shipContent
+    {
+        float: left;
+        width: 30%;
+        position: relative;
+        overflow: hidden;
+        left: 80%
+    }
+
+
+
+
 
     footer
     {
         clear: both;
         width: 90%;
         padding: 0.5%;
-        margin: 0 auto;
+        margin: auto;
         margin-top: 1%;
         margin-bottom: 1%;
         background: #3B8686;

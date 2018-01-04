@@ -60,9 +60,13 @@
         document.getElementById('0 x 9').style.color = 'pink';
     }
 
+    function tryPlaceCurrentShip(x,y)
+    {
+
+        console.log("Coords: "+x+"  "+y);
+    }
+
     </script>
-
-
 
     <head>
         <title>Kasia tutaj jest</title>
@@ -74,76 +78,66 @@
     <body>
 
     <header>
-                <h1>Witaj, jesteś w pokoju nr {{roomData['roomNumber']}} !</h1>
+        <h1 id="roomNumber">Witaj, jesteś w pokoju nr {{roomData['roomNumber']}} !</h1>
     </header>
 
-        <section class="section_left">
-
-
+    <section id="room">
+        <section class="sectionLeft" id="playerSection">
             <section>
-                <h1>Hello, {{user['username']}} !</h1>
+                <h1 id="userName">Hello, {{user['name']}} !</h1>
                 <h2>Twoje statki</h2>
                 <button type="button" id="button_one" class="button" onclick="startGame()"><h3>Click Me!</h3></button>
-             </section>
-
+            </section>
             <section class="title">
                 <h1>Twoja Plansza</h1>
             </section>
-
             <section>
-                <table border = "2pt" id="board_one" align="center">
-                    {% for i in range (0,15) %}
-                        <tr>
+                <button id="placeShip" onclick="setCurrentShip(4)">
+                    <h2>Wstaw 4</h2>
+                </button>
+                <table border = "2pt" id="board" align="center">
+                    {% for k in range (0,15) %}
+                    <tr>
                         {% for j in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
-                            {% set x = [ (j)|string, (i)|string ] | join("") %}
-                            <td height="32" width="32" align="center" id="{{x}}" onmouseover="changeColor(this, 'red' )" onmouseleave="changeColor(this, 'blue')">{{j}}{{i}}</td>
+                        {% set coordinates = [ (j)|string, (k)|string ] | join("") %}
+                        <td height="32" width="32" align="center" id="{{coordinates}}" onmouseover="tryPlaceCurrentShip('{{k}}','{{j}}')">{{j}}{{k}}</td>
                         {% endfor %}
-                        </tr>
+                    </tr>
                     {% endfor %}
                 </table>
             </section>
-
-
-
         </section>
 
 
 
-        <section class="section_right">
 
-
+        <section class="sectionRight" id="opponentSection">
             <section>
-                <h1>Hello, {{user['username']}} !</h1>
+                <h1 id="opponentName">Hello, {{opponent['name']}} !</h1>
                 <h2>Statki przeciwnika</h2>
                 <button type="button" id="button_two" class="button" onclick="startGame()"><h3>Click Me!</h3></button>
             </section>
-
-
             <section class="title">
                 <h1>Plansza Przeciwnika</h1>
             </section>
-
             <section>
-                <table border = "2pt" id="board_two" align="center">
+                <table border = "2pt" id="board" align="center">
                     {% for k in range (0,15) %}
-                        <tr>
+                    <tr>
                         {% for j in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
-                            {% set x = [ (j)|string, (k)|string ] | join("") %}
-                            <td height="32" width="32" align="center" id="{{k}}" onmouseover="changeColor(this, 'red' )" onmouseleave="changeColor(this, 'blue')">{{j}}{{k}}</td>
+                        {% set coordinates = [ (j)|string, (k)|string ] | join("") %}
+                        <td height="32" width="32" align="center" id="{{coordinates}}" onmouseover="changeColor(this, 'red' )" onmouseleave="changeColor(this, 'blue')">{{j}}{{k}}</td>
                         {% endfor %}
-                        </tr>
+                    </tr>
                     {% endfor %}
                 </table>
             </section>
-
         </section>
-
-
-
+    </section>
 
     </body>
 
     <footer>
-            <h2>autor: Katarzyna Okońska, 2018</h2>
+        <h2>autor: Katarzyna Okońska, 2018</h2>
     </footer>
 </html>

@@ -5,9 +5,10 @@ from app import app
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'username': 'Josif'}
+    user = {'name': 'Josif'}
+    opponent = {'name': 'Adolf'}
     roomData = {'roomNumber': '8'}
-    return render_template('index.html', user=user, roomData=roomData)
+    return render_template('index.html', user=user, opponent= opponent, roomData=roomData)
 
 @app.route('/kasia')
 def niech_zyje():
