@@ -7,12 +7,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
     <script type="text/javascript">
+        var boardLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
+        var currentShipSize = 0;
+        var currentShipRotation = 0; // 0 = - and 1 = |
+        var currentShipCanBePlaced = false;
+        var placedShips = []; // empty array
+
 
         var cars = [
- { "make":"Porsche", "model":"911S" },
- { "make":"Mercedes-Benz", "model":"220SE" },
- { "make":"Jaguar","model": "Mark VII" }
-];
+         { "make":"Porsche", "model":"911S" },
+         { "make":"Mercedes-Benz", "model":"220SE" },
+         { "make":"Jaguar","model": "Mark VII" }
+        ];
 
         var htmlData =
         {
@@ -48,24 +54,117 @@
             );
         };
 
+        function changeColor(myObj, color)
+        {
+            myObj.style.color = color;
+            document.getElementById('0 x 9').style.color = 'pink';
+        }
+
+        function clearTilesSelection()
+        {
+            for (y = 0; y < 15; y++)
+            {
+                for (x= 0; x < 15; x++)
+                {
+                    $("#room").find("#playerSection").find("#board").find("#"+boardLetters[x]+y).css('background-color', 'white');
+                }
+            }
+        }
+
+        function redrawPlacedShips()
+        {
+            placedShips.forEach(highlightPlacedShip)
+        }
+
+        function highlightPlacedShip(item, index)
+        {
+            if (parseInt(item["rotation"])==0)
+            {
+                for (i = 0; i < currentShipSize; i++)
+                {
+                    $("#room").find("#playerSection").find("#board").find("#"+boardLetters[parseInt(item["posX"])+parseInt(i)]+item["posY"]).css('background-color','green');
+                }
+            }
+            else
+            {
+                for (i = 0; i < currentShipSize; i++)
+                {
+                    $("#room").find("#playerSection").find("#board").find("#"+boardLetters[parseInt(item["posX"])]+(parseInt(item["posY"])+i)).css('background-color','green');
+                }
+            }
+        }
+
+        function setCurrentShipSize(size)
+        {
+            currentShipSize = size;
+        }
 
 
-    </script>
 
-    <script>
+        function placeCurrentShip(x, y)
+        {
+            if (currentShipCanBePlaced)
+            {
+                placedShips.push({ posX: x, posY: y, size: currentShipSize, rotation: currentShipRotation });
+                currentShipSize = 0;
+                currentShipCanBePlaced = false;
+            }
+        }
 
-    function changeColor(myObj, color)
-    {
-        myObj.style.color = color;
-        document.getElementById('0 x 9').style.color = 'pink';
-    }
+        function tryPlaceCurrentShip(x,y)
+        {
+            if (currentShipSize <= 0)
+            {
+                return;
+            }
 
-    function tryPlaceCurrentShip(x,y)
-    {
+            clearTilesSelection();
+            redrawPlacedShips();
+            console.log("Coords: "+ boardLetters[x] +"  "+y);
+            console.log("x+currentShipSize: "+ (x+currentShipSize));
+            console.log("(15-x): "+   (15-x));
+            console.log("y+currentShipSize: "+ (y+currentShipSize));
+            console.log("(15-y): "+   (15-y));
 
-        console.log("Coords: "+x+"  "+y);
-    }
-
+            if (currentShipRotation==0)
+            {
+                if(parseInt(x) + currentShipSize < 15+1)
+                {
+                    for (i = 0; i < currentShipSize; i++)
+                    {
+                        $("#room").find("#playerSection").find("#board").find("#"+boardLetters[parseInt(x)+parseInt(i)]+y).css('background-color','green');
+                    }
+                    currentShipCanBePlaced = true;
+                }
+                else
+                {
+                    for (i = 0; i < (15-x); i++)
+                    {
+                        $("#room").find("#playerSection").find("#board").find("#"+boardLetters[parseInt(x)+parseInt(i)]+y).css('background-color','red');
+                    }
+                    currentShipCanBePlaced = false;
+                }
+            }
+            else
+            {
+                if(parseInt(y) + currentShipSize < 15+1)
+                {
+                    for (i = 0; i < currentShipSize; i++)
+                    {
+                        $("#room").find("#playerSection").find("#board").find("#"+boardLetters[parseInt(x)]+(parseInt(y)+i)).css('background-color','green');
+                    }
+                    currentShipCanBePlaced = true;
+                }
+                else
+                {
+                    for (i = 0; i < (15-y); i++)
+                    {
+                        $("#room").find("#playerSection").find("#board").find("#"+boardLetters[parseInt(x)]+(parseInt(y)+i)).css('background-color','red');
+                    }
+                    currentShipCanBePlaced = false;
+                }
+            }
+        }
     </script>
 
     <head>
@@ -92,15 +191,16 @@
                 <h1>Twoja Plansza</h1>
             </section>
             <section>
-                <button id="placeShip" onclick="setCurrentShip(4)">
+                <button id="placeShip" onclick="setCurrentShipSize(4)">
                     <h2>Wstaw 4</h2>
                 </button>
                 <table border = "2pt" id="board" align="center">
+                    {% set letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
                     {% for k in range (0,15) %}
                     <tr>
-                        {% for j in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
-                        {% set coordinates = [ (j)|string, (k)|string ] | join("") %}
-                        <td height="32" width="32" align="center" id="{{coordinates}}" onmouseover="tryPlaceCurrentShip('{{k}}','{{j}}')">{{j}}{{k}}</td>
+                        {% for j in range (0,15) %}
+                        {% set coordinates = [ (letters[j])|string, (k)|string ] | join("") %}
+                        <td height="32" width="32" align="center" id="{{coordinates}}" onmouseover="tryPlaceCurrentShip('{{j}}','{{k}}')" onmousedown="placeCurrentShip('{{j}}','{{k}}')">{{letters[j]}}{{k}}</td>
                         {% endfor %}
                     </tr>
                     {% endfor %}
