@@ -14,12 +14,6 @@
         var placedShips = []; // empty array
 
 
-        var cars = [
-         { "make":"Porsche", "model":"911S" },
-         { "make":"Mercedes-Benz", "model":"220SE" },
-         { "make":"Jaguar","model": "Mark VII" }
-        ];
-
         var htmlData =
         {
             "gameMode": "singlePlayer",
@@ -120,15 +114,15 @@
 
             clearTilesSelection();
             redrawPlacedShips();
-            console.log("Coords: "+ boardLetters[x] +"  "+y);
-            console.log("x+currentShipSize: "+ (x+currentShipSize));
-            console.log("(15-x): "+   (15-x));
-            console.log("y+currentShipSize: "+ (y+currentShipSize));
-            console.log("(15-y): "+   (15-y));
+            //console.log("Coords: "+ boardLetters[x] +"  "+y);
+            //console.log("x+currentShipSize: "+ (x+currentShipSize));
+            //console.log("(15-x): "+   (15-x));
+            //console.log("y+currentShipSize: "+ (y+currentShipSize));
+            //console.log("(15-y): "+   (15-y));
 
             if (currentShipRotation==0)
             {
-                if(parseInt(x) + currentShipSize < 15+1)
+                if(parseInt(x) + currentShipSize < 15)
                 {
                     for (i = 0; i < currentShipSize; i++)
                     {
@@ -147,7 +141,7 @@
             }
             else
             {
-                if(parseInt(y) + currentShipSize < 15+1)
+                if(parseInt(y) + currentShipSize < 15)
                 {
                     for (i = 0; i < currentShipSize; i++)
                     {
@@ -187,25 +181,40 @@
                 <h2>Twoje statki</h2>
                 <button type="button" id="button_one" class="button" onclick="startGame()"><h3>Click Me!</h3></button>
             </section>
-            <section class="title">
-                <h1>Twoja Plansza</h1>
+            <section >
+                <section class="title">
+                    <h1>Twoja Plansza</h1>
+                </section>
+                <section class="boardArea">
+                    <section class = "unusedShips">
+                        <button id="placeShip" onclick="setCurrentShipSize(4)">
+                            <h2>Wstaw 4</h2>
+                        </button>
+                    </section>
+
+                    <section class = "boardUser">
+                        <table border = "2pt" id="board" align="center">
+                            {% set letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
+                            {% for k in range (0,15) %}
+                            <tr>
+                                {% for j in range (0,15) %}
+                                {% set coordinates = [ (letters[j])|string, (k)|string ] | join("") %}
+                                <td height="32" width="32" align="center" id="{{coordinates}}" onmouseover="tryPlaceCurrentShip('{{j}}','{{k}}')" onmousedown="placeCurrentShip('{{j}}','{{k}}')">{{letters[j]}}{{k}}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </section>
+
+                    <section class = "usedShips">
+                        <button id="placeShip" onclick="setCurrentShipSize(4)">
+                            <h2>Wstaw 4</h2>
+                        </button>
+                    </section>
+
+                </section>
             </section>
-            <section>
-                <button id="placeShip" onclick="setCurrentShipSize(4)">
-                    <h2>Wstaw 4</h2>
-                </button>
-                <table border = "2pt" id="board" align="center">
-                    {% set letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
-                    {% for k in range (0,15) %}
-                    <tr>
-                        {% for j in range (0,15) %}
-                        {% set coordinates = [ (letters[j])|string, (k)|string ] | join("") %}
-                        <td height="32" width="32" align="center" id="{{coordinates}}" onmouseover="tryPlaceCurrentShip('{{j}}','{{k}}')" onmousedown="placeCurrentShip('{{j}}','{{k}}')">{{letters[j]}}{{k}}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </table>
-            </section>
+
         </section>
 
 
@@ -220,18 +229,32 @@
             <section class="title">
                 <h1>Plansza Przeciwnika</h1>
             </section>
-            <section>
-                <table border = "2pt" id="board" align="center">
-                    {% for k in range (0,15) %}
-                    <tr>
-                        {% for j in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
-                        {% set coordinates = [ (j)|string, (k)|string ] | join("") %}
-                        <td height="32" width="32" align="center" id="{{coordinates}}" onmouseover="changeColor(this, 'red' )" onmouseleave="changeColor(this, 'blue')">{{j}}{{k}}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </table>
+
+            <section class="boardArea">
+                <section class = "unshotShips">
+                    <h2>Wstaw 4</h2>
+                </section>
+
+                <section>
+                    <section class = "boardOpponent">
+                        <table border = "2pt" id="board" align="center">
+                                {% for k in range (0,15) %}
+                                <tr>
+                                    {% for j in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'] %}
+                                    {% set coordinates = [ (j)|string, (k)|string ] | join("") %}
+                                    <td height="32" width="32" align="center" id="{{coordinates}}" onmouseover="changeColor(this, 'red' )" onmouseleave="changeColor(this, 'blue')">{{j}}{{k}}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </table>
+                    </section>
+                </section>
+
+                <section class = "shotShips">
+                            <h2>Wstaw 4</h2>
+                </section>
             </section>
+
         </section>
     </section>
 

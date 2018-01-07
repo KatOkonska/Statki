@@ -1,10 +1,11 @@
-body
+
+    body
     {
         text-align:justify;
         font-family:'Kaushan Script';
         font-size: 13pt;
         float: center;
-        background-color: #0B486B
+        background-color: #98DDDE
 
 
     }
@@ -49,6 +50,20 @@ body
 
     }
 
+* { box-sizing: border-box; padding: 0; margin: 0; }
+
+    table
+    {
+        width: 100%;
+    }
+    td
+    {
+        width: calc(100% / 15);
+        height: calc(100% / 15);
+        overflow: hidden;
+        font-size: 1vw; /* <---- the viewport relative font-size */
+    }
+
     .button
     {
         background-color: #6b1244;
@@ -78,11 +93,11 @@ body
 
     .sectionLeft
     {
-        width: 45%;
+        width: 47.8%;
         margin-top: 0.2%;
         margin-bottom: 0.2%;
-        margin-left: 1%;
-        margin-right: 1%;
+        margin-left: 0%;
+        margin-right: 0%;
         float: left;
         background: #d5f4e6;
         padding: 1%;
@@ -92,11 +107,11 @@ body
 
     .sectionRight
     {
-        width: 45%;
+        width: 47.8%;
         margin-top: 0.2%;
         margin-bottom: 0.2%;
-        margin-left: 1%;
-        margin-right:1%;
+        margin-left: 0%;
+        margin-right: 0%;
         float: right;
         background:#d5f4e6;
         padding: 1%;
@@ -104,49 +119,106 @@ body
 
 
     }
-
-    .boardContainer
+    .boardArea
     {
-        background: #888881;
-        display: block;
-        margin: auto;
+            background:blue;
     }
 
-    .boardContent
+    .unusedShips
+
     {
+        width: 8%;
+        height: 600px;
+        margin-top: 0.2%;
+        margin-bottom: 0.2%;
+        margin-left: 0.1%;
+        margin-right: 0.1%;
         float: left;
-        width: 100$;
-        background: blue;
-        overflow: hidden;
-        position: relative;;
+        background: #3B8686;
+        padding: 1%;
+        border-radius: 5px;
+
     }
 
-    .board
+
+    .boardUser
     {
+        width: 75%;
+        margin-top: 0.2%;
+        margin-bottom: 0.2%;
+        margin-left: 0.1%;
+        margin-right: 0.1%;
         float: left;
-        width: 30%;
-        position: relative;
-        overflow: hidden;
-        left: 80%;
+        background: #45B8AC;
+        padding: 1%;
+        border-radius: 5px;
+
     }
 
-    .shipsContainer
+    .usedShips
+
     {
+        width: 8%;
+        height: 600px;
+        margin-top: 0.2%;
+        margin-bottom: 0.2%;
+        margin-left: 0.1%;
+        margin-right: 0.1%;
         float: left;
-        width: 100$;
-        background: green;
-        position: relative;
-        right: 30%;
+        background: #3B8686;
+        padding: 1%;
+        border-radius: 5px;
+
     }
 
-    .shipContent
+
+    .unshotShips
+
     {
+        width: 8%;
+        height: 600px;
+        margin-top: 0.2%;
+        margin-bottom: 0.2%;
+        margin-left: 0.1%;
+        margin-right: 0.1%;
         float: left;
-        width: 30%;
-        position: relative;
-        overflow: hidden;
-        left: 80%
+        background: #3B8686;
+        padding: 1%;
+        border-radius: 5px;
+
     }
+
+
+    .boardOpponent
+    {
+        width: 75%;
+        margin-top: 0.2%;
+        margin-bottom: 0.2%;
+        margin-left: 0.1%;
+        margin-right: 0.1%;
+        float: left;
+        background: #45B8AC;
+        padding: 1%;
+        border-radius: 5px;
+
+    }
+
+    .shotShips
+
+    {
+        width: 8%;
+        height: 600px;
+        margin-top: 0.2%;
+        margin-bottom: 0.2%;
+        margin-left: 0.1%;
+        margin-right: 0.1%;
+        float: left;
+        background: #3B8686;
+        padding: 1%;
+        border-radius: 5px;
+
+    }
+
 
 
 
@@ -165,11 +237,11 @@ body
 
     }
 
-@media all and (max-width: 1200px)
+@media all and (max-width: 1750px)
 {
 
 
-    .section_left
+    .sectionLeft
     {
         float: none;
         display: block;
@@ -181,7 +253,7 @@ body
         margin-bottom: 0.5%;
 
     }
-    .section_right
+    .sectionRight
     {
 
         float: none;
