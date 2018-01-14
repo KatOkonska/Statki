@@ -1,18 +1,71 @@
 <!DOCTYPE html>
 
-
 <html>
-
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
     <script type="text/javascript">
+        // Client-side Javascript in the HTML
+        var roomNumber = -1;
+        var playerJoinedRoomSource;
+
+        var playerNick = ""
+        var enemyNick = ""
+
+        function createSource_playerJoinedRoom()
+        {
+            console.log("createSource_playerJoinedRoom");
+            playerJoinedRoomSource = new EventSource("/playerJoinedRoom?"+"roomNumber="+roomNumber);
+
+            playerJoinedRoomSource.onopen = function(){
+                //alert('connection is opened.'+playerJoinedRoomSource.readyState);
+            };
+
+            playerJoinedRoomSource.onerror = function(){
+                //alert('error: '+playerJoinedRoomSource.readyState);
+            };
+
+            playerJoinedRoomSource.onmessage = function(e)
+             {
+                currentPlayers = JSON.parse(e.data)
+                if (currentPlayers.length > 1)
+                {
+                    if (enemyNick == "")
+                    {
+                        var index = currentPlayers.indexOf(playerNick);
+                        if (index > -1) {
+                            currentPlayers.splice(index, 1);
+                            enemyNick = currentPlayers[0];
+                            $("#room").find("#opponentSection").find("#opponentName").text("Hello, " + enemyNick + " !");
+                            window.confirm("Player: " + enemyNick + " has joined the room.");
+                        }
+                    }
+                }
+            };
+        }
+
+        function setRoomNumber(number)
+        {
+            console.log("setRoomNumber");
+            roomNumber = number
+        }
+
+        function setPlayerName(name)
+        {
+            console.log("setPlayerName");
+            playerNick = name
+        }
+
+        window.onload = function() {
+            setRoomNumber('{{roomData['roomNumber']}}');
+            setPlayerName('{{user['name']}}')
+            createSource_playerJoinedRoom();
+        }
+
         var boardLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
         var currentShipSize = 0;
         var currentShipRotation = 0; // 0 = - and 1 = |
         var currentShipCanBePlaced = false;
         var placedShips = []; // empty array
-
 
         var htmlData =
         {
@@ -114,15 +167,10 @@
 
             clearTilesSelection();
             redrawPlacedShips();
-            //console.log("Coords: "+ boardLetters[x] +"  "+y);
-            //console.log("x+currentShipSize: "+ (x+currentShipSize));
-            //console.log("(15-x): "+   (15-x));
-            //console.log("y+currentShipSize: "+ (y+currentShipSize));
-            //console.log("(15-y): "+   (15-y));
 
             if (currentShipRotation==0)
             {
-                if(parseInt(x) + currentShipSize < 15)
+                if(parseInt(x) + currentShipSize < 15+1)
                 {
                     for (i = 0; i < currentShipSize; i++)
                     {
@@ -141,7 +189,7 @@
             }
             else
             {
-                if(parseInt(y) + currentShipSize < 15)
+                if(parseInt(y) + currentShipSize < 15+1)
                 {
                     for (i = 0; i < currentShipSize; i++)
                     {
