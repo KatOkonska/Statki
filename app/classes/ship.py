@@ -1,6 +1,4 @@
-from app.classes.settings import ShipOrientation
-from app.classes.settings import ShipTypes
-from app.classes.settings import ShipSizes
+from app.classes.settings import *
 from app.classes.segment import Segment
 from app.classes.point import Point
 
@@ -11,6 +9,7 @@ class Ship:
         self.Type = shipType
         self.Size = ShipSizes[self.Type]
         self.IsAlive = True
+        self.Placed = False
         self.StartingPosition = Point(x,y)
         if self.Orientation == ShipOrientation.HORIZONTAL:
             self.Segments = [Segment(self.StartingPosition.x + i, self.StartingPosition.y) for i in range(self.Size)]

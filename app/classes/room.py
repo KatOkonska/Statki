@@ -1,5 +1,4 @@
-from app.classes.settings import Settings
-
+from app.classes.settings import *
 class Room:
     InstanceCounter = 0
 

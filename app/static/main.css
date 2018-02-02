@@ -116,29 +116,19 @@
         background:#d5f4e6;
         padding: 1%;
         border-radius: 5px;
-
-
     }
+
+    .makeRed
+    {
+        background:red;
+    }
+
     .boardArea
     {
-            background:blue;
+        background:blue;
     }
 
-    .unusedShips
 
-    {
-        width: 8%;
-        height: 600px;
-        margin-top: 0.2%;
-        margin-bottom: 0.2%;
-        margin-left: 0.1%;
-        margin-right: 0.1%;
-        float: left;
-        background: #3B8686;
-        padding: 1%;
-        border-radius: 5px;
-
-    }
 
 
     .boardUser
@@ -152,11 +142,9 @@
         background: #45B8AC;
         padding: 1%;
         border-radius: 5px;
-
     }
 
     .usedShips
-
     {
         width: 8%;
         height: 600px;
@@ -168,12 +156,9 @@
         background: #3B8686;
         padding: 1%;
         border-radius: 5px;
-
     }
 
-
-    .unshotShips
-
+    .unusedShips
     {
         width: 8%;
         height: 600px;
@@ -185,7 +170,34 @@
         background: #3B8686;
         padding: 1%;
         border-radius: 5px;
+    }
 
+    .shotShips
+    {
+        width: 8%;
+        height: 600px;
+        margin-top: 0.2%;
+        margin-bottom: 0.2%;
+        margin-left: 0.1%;
+        margin-right: 0.1%;
+        float: left;
+        background: #3B8686;
+        padding: 1%;
+        border-radius: 5px;
+    }
+
+    .unshotShips
+    {
+        width: 8%;
+        height: 600px;
+        margin-top: 0.2%;
+        margin-bottom: 0.2%;
+        margin-left: 0.1%;
+        margin-right: 0.1%;
+        float: left;
+        background: #3B8686;
+        padding: 1%;
+        border-radius: 5px;
     }
 
 
@@ -200,29 +212,7 @@
         background: #45B8AC;
         padding: 1%;
         border-radius: 5px;
-
     }
-
-    .shotShips
-
-    {
-        width: 8%;
-        height: 600px;
-        margin-top: 0.2%;
-        margin-bottom: 0.2%;
-        margin-left: 0.1%;
-        margin-right: 0.1%;
-        float: left;
-        background: #3B8686;
-        padding: 1%;
-        border-radius: 5px;
-
-    }
-
-
-
-
-
 
     footer
     {
@@ -234,13 +224,10 @@
         margin-bottom: 1%;
         background: #3B8686;
         border-radius: 5px;
-
     }
 
 @media all and (max-width: 1750px)
 {
-
-
     .sectionLeft
     {
         float: none;

@@ -48,6 +48,20 @@ def index():
     roomData = {'roomNumber':    CurrentRooms[roomIndex].RoomId}
     return render_template('index.html', user=user, opponent= opponent, roomData=roomData)
 
+@app.route('/shipPlacing',methods = ['POST'])
+def shipPlacing():
+    pass
+    if request.method == 'POST':
+        print("Data recieved: ", request.get_json())
+        requestData = request.get_json()
+        for key, value in requestData.items():
+            print(key," ", value)
+        responseData = {'kaczka': 'kwa kwa', 'pies': 'hau hau'}
+        return json.dumps(responseData)
+    else:
+        return ("Bad method")
+
+
 @app.route('/gameManager',methods = ['POST'])
 def gameManager():
     if request.method == 'POST':
@@ -57,13 +71,13 @@ def gameManager():
             print(key," ", value)
         responseData = {'kaczka': 'kwa kwa', 'pies': 'hau hau'}
         return json.dumps(responseData)
-        #return request.data
     else:
         return ("Bad method")
 
 def event_stream(data):
     print(data)
-    output =  'event: message' + '\n'
+    output =  'retry: 100'  + '\n'
+    output += 'event: message' + '\n'
     output += 'data: ' + data + '\n'
     output += '\n'
     yield output

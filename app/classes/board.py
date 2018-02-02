@@ -1,5 +1,4 @@
-from app.classes.settings import BoardDisplay
-from app.classes.settings import ShipOrientation
+from app.classes.settings import *
 
 class Board:
     def __init__(self, Size):
@@ -7,6 +6,9 @@ class Board:
         self.Data = [[0 for x in range(self.Size)] for y in range(self.Size)]
 
     def DisplayShip(self, ship):
+        if not ship.Placed:
+            return
+
         if ship.Orientation == ShipOrientation.HORIZONTAL:
             for i in ship.Segments.__len__():
                 if ship.Segments[i].IsHit:
