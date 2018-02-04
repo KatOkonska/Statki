@@ -7,7 +7,6 @@ class Room:
         self.RoomSize = Settings.RoomSize
         self.CurrentPlayers = []
         self.IsFree = True
-        self.AndItIsGoodForYou = True
         Room.InstanceCounter +=1
 
     def AddPlayer(self, newPlayer):
@@ -29,13 +28,21 @@ class Room:
                 if PlayerA.Id != PlayerB.Id:
                     PlayerA.MarkEnemy(PlayerB)
 
-    def StartGame(self):
-        for Player in self.CurrentPlayers:
-            readyPlayers = 0
-            if Player.IsReady:
+    def IsGameRunning(self):
+        readyPlayers = 0
+        isRunning = False
+        for player in self.CurrentPlayers:
+            if player.IsReady():
                 readyPlayers += 1
-            if readyPlayers == len(self.CurrentPlayers):
-                self.MarkEnemies(self)
-                return "Game has begun."
-            else:
-                return "Not all players are ready!"
+        print("readyPlayers " + str(readyPlayers))
+        if readyPlayers == self.CurrentPlayers.__len__() and readyPlayers > 0:
+            self.MarkEnemies()
+            self.CurrentPlayers[0].HasTurn = True
+            isRunning = True
+
+        if (isRunning):
+            for player in self.CurrentPlayers:
+                player.RevealEnemyBoard()
+
+        return isRunning
+

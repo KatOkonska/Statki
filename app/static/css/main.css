@@ -1,0 +1,102 @@
+
+    body
+    {
+        text-align:justify;
+        font-family:'Kaushan Script';
+        font-size: 13pt;
+        float: center;
+        margin: 0;
+        background-color: #98DDDE
+    }
+
+    h1
+    {
+        color:#6b1244;
+        font-family: 'Kaushan Script';
+        font-size: 30pt;
+        text-align:center;
+        text-decoration: none;
+    }
+
+    h2
+    {
+        color:#005c5c;
+        font-family: 'Kaushan Script';
+        font-size: 20pt;
+        text-align:center;
+        text-decoration: none;
+    }
+
+    h3
+    {
+        color:#deeaee;
+        font-family: 'Kaushan Script';
+        font-size: 16pt;
+        text-align:center;
+        text-decoration: none;
+    }
+
+    header
+    {
+        clear: both;
+        width: 90%;
+        padding: 0.5%;
+        margin: 0 auto;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        background: #3B8686;
+        border-radius: 5px;
+    }
+
+    td
+    {
+        background: white;
+        height: 32px;
+        width: 32px;
+        text-align:center;
+    }
+
+    .button
+    {
+        background-color: #6b1244;
+        border-radius: 5px;
+        color:#deeaee;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        font-size: 16px;
+        margin: auto;
+        width: 30%
+    }
+
+    .title
+    {
+
+        width: 100%;
+        height: 100%;
+        background: #3B8686;
+        display: block;
+        margin: auto;
+        float: center;
+        border-radius: 5px;
+    }
+
+
+
+
+
+
+
+
+    footer
+    {
+        clear: both;
+        width: 90%;
+        padding: 0.5%;
+        margin: auto;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        background: #3B8686;
+        border-radius: 5px;
+    }
