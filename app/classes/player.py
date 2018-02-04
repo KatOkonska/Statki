@@ -3,6 +3,7 @@ from app.classes.board import Board
 from app.classes.ship import Ship
 from app.classes.point import Point
 import copy
+from random import randint
 
 class Player:
     InstanceCounter = 0
@@ -14,9 +15,18 @@ class Player:
         self.HasTurn = False
         self.Enemy = None
         self.AvailableShips = [[Ship(0,0, shipType) for i in range(0, ShipCounts[shipType])]  for shipType in ShipTypes]
-        self.PlacedShips = []
+        self.BotShipIDs = []
+        self.LastShipIndex = 0
         self.Board = Board(Settings.BoardSize)
         Player.InstanceCounter += 1
+        if (self.IsBot):
+            randVal = randint(0, BotPlacingDefinitions.__len__()-1)
+            for shipType in ShipTypes:
+                if shipType.value < self.AvailableShips.__len__():
+                    for i in range(0, self.AvailableShips[shipType.value].__len__()):
+                        placement = BotPlacingDefinitions[randVal][shipType][i]
+                        self.TryPlaceShip(self.AvailableShips[shipType.value][i], placement[0], placement[1], placement[2])
+                        self.BotShipIDs.append(self.AvailableShips[shipType.value][i].Id)
 
     def MarkEnemy(self, player):
         self.Enemy = player
@@ -174,8 +184,15 @@ class Player:
         if hitCount <= 0:
             self.HasTurn = False
             self.Enemy.HasTurn = True
-        ship.MoveShip(oldPos.x, oldPos.y)
-        print("HitCount: " + str(hitCount))
+            ship.MoveShip(oldPos.x, oldPos.y)
+            if (self.Enemy.IsBot):
+                for shipType in ShipTypes:
+                    if shipType.value < self.Enemy.AvailableShips.__len__():
+                        for enemyShip in self.Enemy.AvailableShips[shipType.value]:
+                            if (enemyShip.Id == self.Enemy.BotShipIDs[self.LastShipIndex]):
+                                self.Enemy.BotShot(enemyShip)
+        else:
+            ship.MoveShip(oldPos.x, oldPos.y)
 
     def ShotEnemyBoard(self, x, y):
         print("ID: " + self.Nick + " ShotEnemyBoard: " + str(x) + " : " + str(y))
@@ -192,10 +209,93 @@ class Player:
                                     if (not segment.IsHit):
                                         segment.IsHit = True
                                         hits += 1
-                                    self.Enemy.Board.Data[x-1][y-1] = BoardDisplay.UNKNOWN.value
-                                    self.Enemy.Board.Data[x+1][y+1] = BoardDisplay.UNKNOWN.value
-                                    self.Enemy.Board.Data[x+1][y-1] = BoardDisplay.UNKNOWN.value
-                                    self.Enemy.Board.Data[x-1][y+1] = BoardDisplay.UNKNOWN.value
+                                    ''' Mark places around shot position '''
+                                    if (x-1 >= 0 and y-1>=0):
+                                        self.Enemy.Board.Data[x-1][y-1] = BoardDisplay.UNKNOWN.value
+                                    if (x+1 < Settings.BoardSize and y+1<Settings.BoardSize):
+                                        self.Enemy.Board.Data[x+1][y+1] = BoardDisplay.UNKNOWN.value
+                                    if (x+1 < Settings.BoardSize and y - 1 >= 0):
+                                        self.Enemy.Board.Data[x+1][y-1] = BoardDisplay.UNKNOWN.value
+                                    if (x - 1 >= 0 and y+1<Settings.BoardSize):
+                                        self.Enemy.Board.Data[x-1][y+1] = BoardDisplay.UNKNOWN.value
+                                    if (x-1 >= 0):
+                                        self.Enemy.Board.Data[x-1][y] = BoardDisplay.VALUABLE.value
+                                    if (x+1 < Settings.BoardSize):
+                                        self.Enemy.Board.Data[x+1][y] = BoardDisplay.VALUABLE.value
+                                    if ( y - 1 >= 0):
+                                        self.Enemy.Board.Data[x][y-1] = BoardDisplay.VALUABLE.value
+                                    if (y+1<Settings.BoardSize):
+                                        self.Enemy.Board.Data[x][y+1] = BoardDisplay.VALUABLE.value
                                     self.Enemy.Board.Data[x][y] = BoardDisplay.SHIP_SHOT.value
+                            if (not ship.IsAlive()):
+                                for segment in ship.Segments:
+                                    ''' Mark places around segment position '''
+                                    if (segment.Position.x-1 >=0 and segment.Position.y-1>=0):
+                                        self.Enemy.Board.Data[segment.Position.x-1][segment.Position.y-1] = BoardDisplay.UNKNOWN.value
+                                    if (segment.Position.x+1 < Settings.BoardSize and segment.Position.y+1<Settings.BoardSize):
+                                        self.Enemy.Board.Data[segment.Position.x+1][segment.Position.y+1] = BoardDisplay.UNKNOWN.value
+                                    if (segment.Position.x+1 < Settings.BoardSize and segment.Position.y - 1 >= 0):
+                                        self.Enemy.Board.Data[segment.Position.x+1][segment.Position.y-1] = BoardDisplay.UNKNOWN.value
+                                    if (segment.Position.x - 1 >= 0 and segment.Position.y+1<Settings.BoardSize):
+                                        self.Enemy.Board.Data[segment.Position.x-1][segment.Position.y+1] = BoardDisplay.UNKNOWN.value
+                                    if (segment.Position.x-1 >= 0):
+                                        self.Enemy.Board.Data[segment.Position.x-1][segment.Position.y] = BoardDisplay.UNKNOWN.value
+                                    if (segment.Position.x+1 < Settings.BoardSize):
+                                        self.Enemy.Board.Data[segment.Position.x+1][segment.Position.y] = BoardDisplay.UNKNOWN.value
+                                    if (segment.Position.y - 1 >= 0):
+                                        self.Enemy.Board.Data[segment.Position.x][segment.Position.y-1] = BoardDisplay.UNKNOWN.value
+                                    if (segment.Position.y+1<Settings.BoardSize):
+                                        self.Enemy.Board.Data[segment.Position.x][segment.Position.y+1] = BoardDisplay.UNKNOWN.value
+                                for segment in ship.Segments:
+                                    self.Enemy.Board.Data[segment.Position.x][segment.Position.y] = BoardDisplay.SHIP_SHOT.value
+
         return hits
 
+    def BotShot(self, ship):
+        print(self.Nick)
+        shotPosition = self.GetMostValuableShotPosition(ship)
+        self.ShotEnemyWithShip(ship, shotPosition.x, shotPosition.y)
+        if self.HasTurn:
+            self.LastShipIndex += 1
+            if (self.LastShipIndex > self.BotShipIDs.__len__() - 1):
+                self.LastShipIndex = 0
+
+            ''' Get next ship and shot with it. '''
+            for shipType in ShipTypes:
+                if shipType.value < self.AvailableShips.__len__():
+                    for ship in self.AvailableShips[shipType.value]:
+                        if (ship.Id == self.BotShipIDs[self.LastShipIndex]):
+                            self.BotShot(ship)
+
+    def GetMostValuableShotPosition(self, ship):
+        print("BotShot " + str(ship.StartingPosition.x) + " " + str(ship.StartingPosition.y))
+        position = Point(0,0)
+        value = 0
+        for y in range(0, Settings.BoardSize):
+            for x in range(0, Settings.BoardSize):
+                print("BotShot BoardDisplay.PLACED.value X: " + str(x) + " Y: " + str(y))
+                if (self.Enemy.Board.Data[x][y] == BoardDisplay.PLACED.value):
+                    print("BotShot BoardDisplay.PLACED.value" + str(x) + " " + str(y))
+                    position.x = x
+                    position.y = y
+                    return position
+                elif (self.Enemy.Board.Data[x][y] == BoardDisplay.VALUABLE.value):
+                    print("BotShot BoardDisplay.VALUABLE.value" + str(x) + " " +  str(y))
+                    position.x = x
+                    position.y = y
+                    value = Settings.BoardSize+1
+                elif (self.Enemy.Board.Data[x][y] == BoardDisplay.EMPTY.value):
+                    newValue = 0
+                    oldPos = Point(ship.StartingPosition.x, ship.StartingPosition.y)
+                    ship.MoveShip(x, y)
+                    for segment in ship.Segments:
+                        if (segment.Position.x >= 0 and segment.Position.x < Settings.BoardSize and segment.Position.y >= 0 and  segment.Position.y < Settings.BoardSize):
+                            if (self.Enemy.Board.Data[segment.Position.x][segment.Position.y] == BoardDisplay.EMPTY.value):
+                                newValue += 1
+                    if newValue > value:
+                        value = newValue
+                        position.x = x
+                        position.y = y
+                        print("BotShot BoardDisplay.EMPTY.value" + str(y) + " " +  str(x))
+                    ship.MoveShip(oldPos.x, oldPos.y)
+        return position

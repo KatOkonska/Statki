@@ -23,7 +23,8 @@ def index():
     opponent = {'name': 'Adolf'}
 
     ''' Create new player '''
-    randomName = ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
+    randomName = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
+        #''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
     newPlayer = Player(randomName)
 
     ''' Get room number from GET request '''
@@ -36,7 +37,7 @@ def index():
     ''' Check for if bot was requested '''
     if botEnabled > 0:
         ''' Create new bot '''
-        botName = ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
+        botName = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
         newBot = Player("Bot_"+botName, True)
         opponent["name"] = "Bot_" + newBot.Nick
         roomIndex = InitializeNewRoom()
@@ -142,7 +143,6 @@ def shotEnemy():
                 for shipType in ShipTypes:
                     for ship in player.AvailableShips[shipType.value]:
                         if (ship.Id == shipId):
-                            print("ID: " + str(ship.Id) + " O: " + str(ship.Orientation))
                             player.ShotEnemyWithShip(ship, x, y)
                             responseData = {
                                 'Data': json.dumps(player.GetEnemyBoardDataDict())

@@ -125,6 +125,9 @@ function createSource_turnStatus()
             return
         }
 
+        askServer_getMyBoard();
+        askServer_getEnemyBoard();
+
         if (turnStatus.IsPlayerTurn && !isPlayerTurn)
         {
             isPlayerTurn = turnStatus.IsPlayerTurn;
@@ -147,6 +150,7 @@ function createSource_turnStatus()
         }
         else if (!turnStatus.IsPlayerTurn)
         {
+
             isPlayerTurn = false;
             $('html, body').animate({
                 scrollTop: $("#gameRoom").find("#playerSection").find("#gameSection").find("#boardSection").find("#board").offset().top
@@ -359,11 +363,11 @@ function redrawEnemyBoard(board)
     {
         for (y= 0; y < 15; y++)
         {
-            var tileColor = 'white'
+            var tileColor =  $("#gameRoom").find("#opponentSection").find("#gameSection").find("#boardSection").find("#board").find("#"+boardLetters[x]+y).css('background-color');
             var tile = board[boardLetters[x] + y.toString()];
             if(parseInt(tile) === 0) // EMPTY
             {
-                tileColor = 'blue';
+                tileColor = 'white';
             }
             else if(parseInt(tile) === 1) // PLACED
             {
@@ -375,7 +379,7 @@ function redrawEnemyBoard(board)
             }
             else if (parseInt(tile) === 3) // MISS
             {
-                tileColor = 'yellow';
+                tileColor = 'blue';
             }
             else if (parseInt(tile) === 4) // UNKNOWN
             {
@@ -431,11 +435,11 @@ function redrawMyBoard(board)
     {
         for (y= 0; y < 15; y++)
         {
-            var tileColor = 'white'
+            var tileColor =  $("#gameRoom").find("#playerSection").find("#gameSection").find("#boardSection").find("#board").find("#"+boardLetters[x]+y).css('background-color');
             var tile = board[boardLetters[x] + y.toString()];
             if(parseInt(tile) === 0) // EMPTY
             {
-                tileColor = 'blue';
+                tileColor = 'white';
             }
             else if(parseInt(tile) === 1) // PLACED
             {
@@ -447,7 +451,7 @@ function redrawMyBoard(board)
             }
             else if (parseInt(tile) === 3) // MISS
             {
-                tileColor = 'yellow';
+                tileColor = 'blue';
             }
             else if (parseInt(tile) === 4) // UNKNOWN
             {

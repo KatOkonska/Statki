@@ -10,7 +10,6 @@ class Ship:
         self.Orientation = ShipOrientation.HORIZONTAL.value
         self.Type = shipType
         self.Size = ShipSizes[self.Type]
-        self.IsAlive = True
         self.Placed = False
         self.StartingPosition = Point(x,y)
         self.Segments = None
@@ -35,6 +34,13 @@ class Ship:
             boundingBox["height"] = self.Size + 2
             return  boundingBox
         return None
+
+    def IsAlive(self):
+        isAlive = False
+        for segment in self.Segments:
+            if (segment.IsHit == False):
+                isAlive = True
+        return isAlive
 
     def MoveShip(self, x, y):
         self.StartingPosition.x = x
