@@ -317,7 +317,7 @@ function markShotPosition(x, y, runFromRedraw)
         {
             if(i < (15-y))
             {
-                $("#gameRoom").find("#opponentSection").find("#gameSection").find("#boardSection").find("#board").find("#"+boardLetters[parseInt(x)]+(parseInt(y)+i)).css('background-color','yellow');
+                $("#gameRoom").find("#opponentSection").find("#gameSection").find("#boardSection").find("#board").find("#"+boardLetters[parseInt(x)]+(parseInt(y)+i)).css('background-color','red');
             }
         }
     }
