@@ -20,10 +20,11 @@ var enemyNick = ""
 
 var boardLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
 
-
-function hideElementByID(id)
+var currentEnemyBoard = null
+var lastMarkedX = -1;
+var lastMarkedY = -1;
+function hideElementByReference(element)
 {
-    var element = document.getElementById(id);
     element.style.display = 'none'; //or
     element.style.visibility = 'hidden';
 }
@@ -119,6 +120,8 @@ function createSource_turnStatus()
         if (turnStatus.HasGameEnded === true)
         {
             window.confirm("Game won by: " + turnStatus.Winner);
+            askServer_getEnemyBoard();
+            askServer_getMyBoard();
             playerJoinedRoomSource.close();
             hasGameStartedSource.close();
             turnStatusSource.close();
@@ -274,7 +277,7 @@ function onPlaceShipOnBoardSuccess(responseData)
     }
 }
 
-function markShotPosition(x, y)
+function markShotPosition(x, y, runFromRedraw)
 {
     if (!isPlayerTurn)
     {
@@ -286,8 +289,39 @@ function markShotPosition(x, y)
         return;
     }
 
-    //askServer_shotEnemy(playerID, x, y, size, rotation)
-    //console.log("Bum bum X: " + parseInt(x) + " Y: " + parseInt(y));
+    lastMarkedX = x;
+    lastMarkedY = y;
+
+    if (currentEnemyBoard == null || runFromRedraw === true)
+    {
+        return
+    }
+    else
+    {
+        redrawEnemyBoard(currentEnemyBoard);
+    }
+
+    if (currentlyShootingShip.Orientation == 0)
+    {
+        for (i = 0; i < currentlyShootingShip.Size ; i++)
+        {
+            if(i < (15-x))
+            {
+                $("#gameRoom").find("#opponentSection").find("#gameSection").find("#boardSection").find("#board").find("#"+boardLetters[parseInt(x)+parseInt(i)]+y).css('background-color','red');
+            }
+        }
+    }
+    else
+    {
+        for (i = 0; i < currentlyShootingShip.Size ; i++)
+        {
+            if(i < (15-y))
+            {
+                $("#gameRoom").find("#opponentSection").find("#gameSection").find("#boardSection").find("#board").find("#"+boardLetters[parseInt(x)]+(parseInt(y)+i)).css('background-color','yellow');
+            }
+        }
+    }
+
 }
 
 function shotEnemyPosition(x, y)
@@ -340,7 +374,6 @@ function askServer_shotEnemy(x, y)
 
 function onShotEnemySuccess(responseData)
 {
-    console.log(responseData);
     redrawEnemyBoard(JSON.parse(responseData))
     currentlyShootingShipIndex += 1;
      if (currentlyShootingShipIndex > player.PlacedShips.length - 1)
@@ -353,11 +386,23 @@ function onShotEnemySuccess(responseData)
 
 function redrawEnemyBoard(board)
 {
-    // Fix with different json parse settings
-    board.Data.replace('/','');
-    console.log(board.Data);
-    board = JSON.parse(board.Data);
-    // End of fix. :(
+    if (board === currentEnemyBoard)
+    {
+         board = currentEnemyBoard;
+    }
+    else
+    {
+        // Fix with different json parse settings
+        board.Data.replace('/','');
+        board = JSON.parse(board.Data);
+        currentEnemyBoard = board;
+        // End of fix. :(
+    }
+
+    if (lastMarkedX > 0 && lastMarkedY > 0)
+    {
+        markShotPosition(lastMarkedX, lastMarkedY, true);
+    }
 
     for (x = 0; x < 15; x++)
     {
@@ -381,9 +426,13 @@ function redrawEnemyBoard(board)
             {
                 tileColor = 'blue';
             }
-            else if (parseInt(tile) === 4) // UNKNOWN
+            else if (parseInt(tile) === 4) // USELESS
             {
                 tileColor = 'gray';
+            }
+            else if (parseInt(tile) === 5) // VALUABLE
+            {
+                tileColor = 'yellow';
             }
             $("#gameRoom").find("#opponentSection").find("#gameSection").find("#boardSection").find("#board").find("#"+boardLetters[x]+y).css('background-color', tileColor);
         }
@@ -427,7 +476,6 @@ function redrawMyBoard(board)
 {
     // Fix with different json parse settings
     board.Data.replace('/','');
-    console.log(board.Data);
     board = JSON.parse(board.Data);
     // End of fix. :(
 
@@ -456,6 +504,10 @@ function redrawMyBoard(board)
             else if (parseInt(tile) === 4) // UNKNOWN
             {
                 tileColor = 'gray';
+            }
+            else if (parseInt(tile) === 5) // VALUABLE
+            {
+                tileColor = 'yellow';
             }
             $("#gameRoom").find("#playerSection").find("#gameSection").find("#boardSection").find("#board").find("#"+boardLetters[x]+y).css('background-color', tileColor);
         }
@@ -494,6 +546,8 @@ function askServer_getEnemyBoard()
 
 function StartGame()
 {
+     $("#gameRoom").find("#playerSection").find("#gameSection").find("#availableShips").find("#rotateCurrentShip").hide();
+     $("#gameRoom").find("#playerSection").find("#gameSection").find("#availableShips").find("#selectNextShip").hide();
     createSource_turnStatus();
 };
 
@@ -541,6 +595,7 @@ function selectNextShip()
     if (player.AvailableShips.length > 0)
     {
         currentShipSize = player.AvailableShips[player.AvailableShips.length-1].Size;
+        $("#gameRoom").find("#playerSection").find("#gameSection").find("#availableShips").find("#selectNextShip").text("Połóż kolejny statek rozmiaru: " + currentShipSize);
     }
 }
 

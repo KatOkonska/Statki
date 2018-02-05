@@ -18,6 +18,9 @@ def InitializeNewRoom():
     return newRoom.RoomId
 
 @app.route('/')
+def main():
+    return render_template('main.html')
+
 @app.route('/index')
 def index():
     opponent = {'name': 'Adolf'}

@@ -10,7 +10,7 @@ class BoardDisplay(Enum):
     PLACED = 1
     SHIP_SHOT = 2
     MISS = 3
-    UNKNOWN = 4
+    USELESS = 4
     VALUABLE = 5
 
 class ShipOrientation(Enum):
@@ -43,7 +43,7 @@ BotPlacingDefinitions = {
             [3, 7, ShipOrientation.VERTICAL]
         ],
         ShipTypes.S_4: [
-            [9,  6,  ShipOrientation.VERTICAL]
+            [9,  6,  ShipOrientation.HORIZONTAL]
         ]
     }
 }

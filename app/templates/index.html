@@ -33,8 +33,8 @@
                 </section>
                 <section id="gameSection">
                     <section id="availableShips">
-                         <button type="button" id="rotateCurrentShip" class="button" onclick=" rotateCurrentShip()"><h3>Rotate current ship</h3></button>
-                         <button type="button" id="selectNextShip" class="button" onclick="selectNextShip()"><h3>Place next ship:</h3></button>
+                         <button type="button" id="rotateCurrentShip" class="button" onclick=" rotateCurrentShip()">Obróć obecny statek o 90 stopni</button>
+                         <button type="button" id="selectNextShip" class="button" onclick="selectNextShip()">Połóż kolejny statek rozmiaru: 4</button>
                     </section>
                     <section id="boardSection">
                          <table border = "2pt" id="board" align="center">
@@ -67,7 +67,7 @@
                                 <tr>
                                     {% for j in range (0,15) %}
                                     {% set coordinates = [ (letters[j])|string, (k)|string ] | join("") %}
-                                    <td height="32px" width="32px" align="center" id="{{coordinates}}" onmouseover="markShotPosition('{{j}}','{{k}}')" onmousedown="shotEnemyPosition('{{j}}','{{k}}')">{{letters[j]}}{{k}}</td>
+                                    <td id="{{coordinates}}" onmouseover="markShotPosition('{{j}}','{{k}}',false)" onmousedown="shotEnemyPosition('{{j}}','{{k}}')">{{letters[j]}}{{k}}</td>
                                     {% endfor %}
                                 </tr>
                                 {% endfor %}

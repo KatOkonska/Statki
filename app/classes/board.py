@@ -6,7 +6,7 @@ class Board:
         self.Size = Size
         self.Data = [[0 for x in range(self.Size)] for y in range(self.Size)]
         for item in self.Data:
-            item = BoardDisplay.UNKNOWN.value
+            item = BoardDisplay.USELESS.value
 
     def GetData(self):
         return self.Data
@@ -31,4 +31,4 @@ class Board:
     def Clear(self):
         for x in range(0, len(self.Data)):
             for y in range(0, len(self.Data[x])):
-                self.Data[x][y] = BoardDisplay.UNKNOWN.value
+                self.Data[x][y] = BoardDisplay.USELESS.value
